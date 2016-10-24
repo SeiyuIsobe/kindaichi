@@ -10,13 +10,23 @@ namespace Remoteworker
 {
     class Program
     {
-        private static string _iotEndpoint = "192.168.11.14";
+        private static string _iotEndpoint = "172.31.61.147";
         private static string _clientID = "987654321";
         private static string _targetTopic = "sakisaki";
         private static MqttClient _client = null;
 
+        private static Shared.RemoexecSetting _setting = null;
+
         static void Main(string[] args)
         {
+            Console.WriteLine("指令を待ちます");
+
+            // 環境設定
+            _setting = new Shared.RemoexecSetting(_clientID.ToString());
+
+            // 環境設定をパラメータにセット
+            _iotEndpoint = _setting.EndPoint;
+
             _client = new MqttClient(_iotEndpoint);
             _client.Connect(_clientID);
 
