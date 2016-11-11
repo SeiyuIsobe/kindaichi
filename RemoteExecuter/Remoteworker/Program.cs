@@ -10,7 +10,7 @@ namespace Remoteworker
 {
     class Program
     {
-        private static string _iotEndpoint = "172.31.61.147";
+        private static string _iotEndpoint = "172.31.61.152";
         private static string _clientID = "987654321";
         private static string _targetTopic = "sakisaki";
         private static MqttClient _client = null;
