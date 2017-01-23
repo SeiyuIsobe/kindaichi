@@ -53,46 +53,46 @@ namespace ComJan
                 }
                 //bb.Save("a" + i.ToString() + ".bmp");
 
-                // 補正
-                Point wp = CalcWeightPoint(TwoColorscale(bb, 100));
-                int sx_center = (int)(Math.Round((double)sx / 2.0));
-                int hosei = 0;
-                if (sx_center > wp.X) // 左にズレている
-                {
-                    hosei = sx_center - wp.X;
-                }
-                else if (sx_center < wp.X) // 右にズレている
-                {
-                    hosei = wp.X - sx_center;
-                }
-                else
-                {
-                }
+                //// 補正
+                //Point wp = CalcWeightPoint(TwoColorscale(bb, 100));
+                //int sx_center = (int)(Math.Round((double)sx / 2.0));
+                //int hosei = 0;
+                //if (sx_center > wp.X) // 左にズレている
+                //{
+                //    hosei = sx_center - wp.X;
+                //}
+                //else if (sx_center < wp.X) // 右にズレている
+                //{
+                //    hosei = wp.X - sx_center;
+                //}
+                //else
+                //{
+                //}
                 
-                {
-                    bb.Dispose();
-                    r0 = new Rectangle((int)(x0) - hosei, 0, (int)(sx), b.Height);
-                    r = new Rectangle(0, 0, (int)(sx), b.Height);
-                    Bitmap bb2 = new Bitmap((int)sx, b.Height);
-                    using (Graphics g = Graphics.FromImage(bb2))
-                    {
-                        g.DrawImage(b, r, r0, GraphicsUnit.Pixel);
-                    }
-                    if ((int)(x0) - hosei < 0) // いちばん左端
-                    {
-                        for (int w = 0; w < hosei - (int)x0; w++)
-                        {
-                            for (int h = 0; h < bb2.Height; h++)
-                            {
-                                bb2.SetPixel(w, h, Color.White);
-                            }
-                        }
-                    }
-                    //System.Diagnostics.Debug.WriteLine(x0.ToString());
-                    //bb2.Save("c" + i.ToString() + ".bmp");
-                    //BpSolution.GrayScale.TwoColorscale(bb2, 100, "d" + i.ToString() + ".bmp");
-                    bb = bb2;
-                }
+                //{
+                //    bb.Dispose();
+                //    r0 = new Rectangle((int)(x0) - hosei, 0, (int)(sx), b.Height);
+                //    r = new Rectangle(0, 0, (int)(sx), b.Height);
+                //    Bitmap bb2 = new Bitmap((int)sx, b.Height);
+                //    using (Graphics g = Graphics.FromImage(bb2))
+                //    {
+                //        g.DrawImage(b, r, r0, GraphicsUnit.Pixel);
+                //    }
+                //    if ((int)(x0) - hosei < 0) // いちばん左端
+                //    {
+                //        for (int w = 0; w < hosei - (int)x0; w++)
+                //        {
+                //            for (int h = 0; h < bb2.Height; h++)
+                //            {
+                //                bb2.SetPixel(w, h, Color.White);
+                //            }
+                //        }
+                //    }
+                //    //System.Diagnostics.Debug.WriteLine(x0.ToString());
+                //    //bb2.Save("c" + i.ToString() + ".bmp");
+                //    //BpSolution.GrayScale.TwoColorscale(bb2, 100, "d" + i.ToString() + ".bmp");
+                //    bb = bb2;
+                //}
 
                 _tehai_moto.Add(bb);
             }

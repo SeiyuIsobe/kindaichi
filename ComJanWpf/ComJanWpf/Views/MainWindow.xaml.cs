@@ -37,6 +37,7 @@ namespace ComJanWpf.Views
     {
         private VideoCaptureDevice _device = null;
         private DeviceFilters _selectCamera = null;
+        private List<System.Windows.Controls.Image> _pctPaiList = new List<System.Windows.Controls.Image>();
 
         public MainWindow()
         {
@@ -49,7 +50,21 @@ namespace ComJanWpf.Views
                 _selectCamera = q as DeviceFilters;
                 break;
             }
-            
+
+            _pctPaiList.Add(_pai01);
+            _pctPaiList.Add(_pai02);
+            _pctPaiList.Add(_pai03);
+            _pctPaiList.Add(_pai04);
+            _pctPaiList.Add(_pai05);
+            _pctPaiList.Add(_pai06);
+            _pctPaiList.Add(_pai07);
+            _pctPaiList.Add(_pai08);
+            _pctPaiList.Add(_pai09);
+            _pctPaiList.Add(_pai10);
+            _pctPaiList.Add(_pai11);
+            _pctPaiList.Add(_pai12);
+            _pctPaiList.Add(_pai13);
+            _pctPaiList.Add(_pai14);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -73,21 +88,24 @@ namespace ComJanWpf.Views
                 // 初期値は低解像度をハイビジョン1920x1080に設定する
                 _device.VideoResolution = _device.Search(1920, 1080);
 
-                _device.NewFrame += (ss, ee) =>
+                if(null != _device)
                 {
-                    AForge.Video.NewFrameEventArgs eventArgs = ee as AForge.Video.NewFrameEventArgs;
-                    _picture.Dispatcher.Invoke(() =>
+                    _device.NewFrame += (ss, ee) =>
                     {
-                        _picture.Source = BitmapToBitmapFrame.Convert(eventArgs.Frame);
-                    });
-                };
+                        AForge.Video.NewFrameEventArgs eventArgs = ee as AForge.Video.NewFrameEventArgs;
+                        _picture.Dispatcher.Invoke(() =>
+                        {
+                            _picture.Source = BitmapToBitmapFrame.Convert(eventArgs.Frame);
+                        });
+                    };
 
-                // ピクセル計算用
-                _video_width = _device.VideoResolution.FrameSize.Width;
-                _video_hight = _device.VideoResolution.FrameSize.Height;
+                    // ピクセル計算用
+                    _video_width = _device.VideoResolution.FrameSize.Width;
+                    _video_hight = _device.VideoResolution.FrameSize.Height;
 
-                // 開始
-                _device.Start();
+                    // 開始
+                    _device.Start();
+                }
             }
         }
 
@@ -155,7 +173,12 @@ namespace ComJanWpf.Views
                 _pctStill.Source = dest.ToImageSource();
 
                 ComJanEngine cje = new ComJanEngine();
-                cje.InputTehai(dest);
+                var list = cje.InputTehai(dest);
+
+                for(int i = 0; i < 14; i++)
+                {
+                    _pctPaiList[i].Source = list[i].ToImageSource();
+                }
             }
             
         }
