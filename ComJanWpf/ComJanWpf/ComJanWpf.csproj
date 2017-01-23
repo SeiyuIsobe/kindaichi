@@ -114,6 +114,7 @@
     <Compile Include="Models\Model.cs" />
     <Compile Include="ViewModels\Affine.cs" />
     <Compile Include="ViewModels\BitmapToBitmapFrame.cs" />
+    <Compile Include="ViewModels\ComJanEngine.cs" />
     <Compile Include="ViewModels\DeviceFilters.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
