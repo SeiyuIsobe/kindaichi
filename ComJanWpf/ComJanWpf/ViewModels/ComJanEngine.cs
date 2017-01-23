@@ -6,14 +6,14 @@ using System.Drawing;
 
 namespace ComJan
 {
-    internal class ComJanEngine
+    public class ComJanEngine
     {
         const int PAI_NUM = 14;
 
         Bitmap m_tehai;
         //Bitmap[] m_tehaimoto = new Bitmap[PAI_NUM];
         //Bitmap[] m_tehairg = new Bitmap[PAI_NUM];
-        List<Bitmap> m_tehai_moto = new List<Bitmap>();
+        List<Bitmap> _tehai_moto = new List<Bitmap>();
         List<Bitmap> m_tehai_rg;
 
         public ComJanEngine()
@@ -28,12 +28,12 @@ namespace ComJan
         /// ビットマップbの幅は14の整数倍であること
         /// </summary>
         /// <param name="b"></param>
-        public void InputTehai(Bitmap b)
+        public List<Bitmap> InputTehai(Bitmap b)
         {
             System.Diagnostics.Debug.WriteLine("b.Width = " + b.Width);
 
             // クリア
-            m_tehai_moto.Clear();
+            _tehai_moto.Clear();
 
             m_tehai = b;
 
@@ -45,8 +45,7 @@ namespace ComJan
                 // 一回目の切り出し
                 Rectangle r0 = new Rectangle((int)(x0), 0, (int)(sx), b.Height);
                 Rectangle r = new Rectangle(0, 0, (int)(sx), b.Height);
-                System.Diagnostics.Debug.WriteLine(x0.ToString());
-                //Bitmap bb = b.Clone(r, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
                 Bitmap bb = new Bitmap((int)sx, b.Height);
                 using (Graphics g = Graphics.FromImage(bb))
                 {
@@ -55,7 +54,7 @@ namespace ComJan
                 //bb.Save("a" + i.ToString() + ".bmp");
 
                 // 補正
-                Point wp = CalcWeightPoint(BpSolution.GrayScale.TwoColorscale(bb, 100/*, "b" + i.ToString() + ".bmp"*/));
+                Point wp = CalcWeightPoint(TwoColorscale(bb, 100));
                 int sx_center = (int)(Math.Round((double)sx / 2.0));
                 int hosei = 0;
                 if (sx_center > wp.X) // 左にズレている
@@ -69,9 +68,7 @@ namespace ComJan
                 else
                 {
                 }
-
-                // ズレを考慮してもう一回切り出す
-                //if (hosei != 0)
+                
                 {
                     bb.Dispose();
                     r0 = new Rectangle((int)(x0) - hosei, 0, (int)(sx), b.Height);
@@ -96,15 +93,11 @@ namespace ComJan
                     //BpSolution.GrayScale.TwoColorscale(bb2, 100, "d" + i.ToString() + ".bmp");
                     bb = bb2;
                 }
-                //else
-                //{
-                //    // ok
-                //}
 
-                //IsMatch(b, bb, (int)sx, -10);
-
-                m_tehai_moto.Add(bb);
+                _tehai_moto.Add(bb);
             }
+
+            return _tehai_moto;
         }
 
         private Point CalcWeightPoint(Bitmap bb)
@@ -164,13 +157,35 @@ namespace ComJan
         {
             get
             {
-                return m_tehai_moto;
+                return _tehai_moto;
             }
         }
 
         public int f(double ff)
         {
             return 0;
+        }
+
+        public Bitmap TwoColorscale(Bitmap bmp, int nichi)
+        {
+            // 二値化
+            for (int w = 0; w < bmp.Width; w++)
+            {
+                for (int h = 0; h < bmp.Height; h++)
+                {
+                    if (bmp.GetPixel(w, h).R >= nichi)
+                    {
+                        bmp.SetPixel(w, h, Color.White);
+                    }
+                    else
+                    {
+                        //System.Diagnostics.Debug.WriteLine("{0}\t{1}\t{2}", w, h, bmp.GetPixel(w, h).R);
+                        bmp.SetPixel(w, h, Color.Black);
+                    }
+                }
+            }
+
+            return bmp;
         }
     }
 }

@@ -71,7 +71,7 @@ namespace ComJanWpf.Views
                 _device = new VideoCaptureDevice(_selectCamera.MonikerString);
 
                 // 初期値は低解像度をハイビジョン1920x1080に設定する
-                _device.VideoResolution = _device.VideoCapabilities[8];
+                _device.VideoResolution = _device.Search(1920, 1080);
 
                 _device.NewFrame += (ss, ee) =>
                 {
@@ -153,6 +153,9 @@ namespace ComJanWpf.Views
                 g.DrawImage(((BitmapSource)_pctStill.Source).ToBitmap(System.Drawing.Imaging.PixelFormat.Format32bppArgb), desRect, srcRect, GraphicsUnit.Pixel);
                 g.Dispose();
                 _pctStill.Source = dest.ToImageSource();
+
+                ComJanEngine cje = new ComJanEngine();
+                cje.InputTehai(dest);
             }
             
         }
@@ -227,6 +230,19 @@ namespace ComJanWpf.Views
                 return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
             finally { DeleteObject(handle); }
+        }
+
+        public static VideoCapabilities Search(this VideoCaptureDevice device, int width, int height)
+        {
+            foreach(var cap in device.VideoCapabilities)
+            {
+                if(cap.FrameSize.Width == width && cap.FrameSize.Height == height)
+                {
+                    return cap;
+                }
+            }
+
+            return null;
         }
     }
     
