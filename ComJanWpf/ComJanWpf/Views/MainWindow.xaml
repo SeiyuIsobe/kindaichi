@@ -34,7 +34,7 @@
     </i:Interaction.Triggers>
 
     <Grid>
-        <Image x:Name="_picture" MouseDown="_capturedImageBox_MouseDown" Width="600" Height="337" />
+        
         <Grid VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -42,12 +42,21 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Image x:Name="_capturedImageBox" Width="400" Height="225" MouseDown="_capturedImageBox_MouseDown_1" Grid.Row="0"/>
-            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Row="1">
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="_picture" MouseDown="_capturedImageBox_MouseDown" Width="600" Height="337" Grid.Column="0"/>
+                <Image x:Name="_capturedImageBox" Width="600" Height="337" MouseDown="_capturedImageBox_MouseDown_1" Grid.Column="1"/>
                 
-                <Image x:Name="_pctStill" Width="400" Height="225"/>
-                <!--<Rectangle x:Name="_pctPai" StrokeThickness="2" Width="300" Height="300" Stroke="#FF0FCF0F" Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>-->
             </Grid>
+
+            <Image x:Name="_pctStill" Width="400" Height="225" Grid.Row="1"/>
+            
+            <!--<Rectangle x:Name="_pctPai" StrokeThickness="2" Width="300" Height="300" Stroke="#FF0FCF0F" Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>-->
+
             <Grid Grid.Row="2">
                 <Image x:Name="_pctPai" Width="993" Height="75"/>
             </Grid>
@@ -58,6 +67,7 @@
                         <Setter Property="Height" Value="75"/>
                         <Setter Property="HorizontalAlignment" Value="Left"/>
                         <Setter Property="Margin" Value="15,0,0,0"/>
+                        <Setter Property="Stretch" Value="Fill"/>
                     </Style>
                 </Grid.Resources>
                 <StackPanel Orientation="Horizontal">

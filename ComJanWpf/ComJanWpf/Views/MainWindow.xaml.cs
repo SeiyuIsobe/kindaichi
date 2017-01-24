@@ -178,6 +178,7 @@ namespace ComJanWpf.Views
                 for(int i = 0; i < 14; i++)
                 {
                     _pctPaiList[i].Source = list[i].ToImageSource();
+                    list[i].Save($"{i}.bmp");
                 }
             }
             
