@@ -34,8 +34,28 @@
     </i:Interaction.Triggers>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical">
+                    <RadioButton x:Name="_manzu" Content="MANZU" Click="ManPinSou_Click"/>
+                    <RadioButton x:Name="_pinzu" Content="PINZU" Click="ManPinSou_Click"/>
+                    <RadioButton x:Name="_souzu" Content="SOUZU" Click="ManPinSou_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <RadioButton x:Name="_kaze" Content="KAZE" Click="KazeSangen_Click"/>
+                    <RadioButton x:Name="_sangen" Content="SANGEN" Click="KazeSangen_Click"/>
+                </StackPanel>
+                
+                
+            </StackPanel>
+        </Grid>
         
-        <Grid VerticalAlignment="Center">
+        <Grid VerticalAlignment="Center" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>

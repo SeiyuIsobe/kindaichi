@@ -178,7 +178,7 @@ namespace ComJanWpf.Views
                 for(int i = 0; i < 14; i++)
                 {
                     _pctPaiList[i].Source = list[i].ToImageSource();
-                    list[i].Save($"{i}.bmp");
+                    list[i].Save($@"..\..\outdata\{i}.bmp");
                 }
             }
             
@@ -210,6 +210,21 @@ namespace ComJanWpf.Views
             _dstPoint[2].Y = _dstPoint[0].Y + (int)Math.Round(lh);
             _dstPoint[3].X = _dstPoint[0].X;
             _dstPoint[3].Y = _dstPoint[2].Y;
+        }
+
+        private string _manpinsou = string.Empty;
+        private string _kazesangen = string.Empty;
+
+        private void ManPinSou_Click(object sender, RoutedEventArgs e)
+        {
+            RadioButton ctrl = sender as RadioButton;
+            _manpinsou = ctrl.Content.ToString();
+        }
+
+        private void KazeSangen_Click(object sender, RoutedEventArgs e)
+        {
+            RadioButton ctrl = sender as RadioButton;
+            _kazesangen = ctrl.Content.ToString();
         }
     }
 
