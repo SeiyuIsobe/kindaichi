@@ -67,8 +67,12 @@ namespace ComJanWpf.Views
             _pctPaiList.Add(_pai14);
         }
 
+        private MainWindowViewModel _mainVM = null;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            _mainVM = this.DataContext as MainWindowViewModel;
+
             if(null == _selectCamera)
             {
                 Bitmap bp = new Bitmap(@"C:\Users\s-isobe\Pictures\sample.jpg");
@@ -178,8 +182,9 @@ namespace ComJanWpf.Views
                 for(int i = 0; i < 14; i++)
                 {
                     _pctPaiList[i].Source = list[i].ToImageSource();
-                    list[i].Save($@"..\..\outdata\{i}.bmp");
                 }
+
+                _mainVM.SavePai(list);
             }
             
         }
@@ -210,21 +215,6 @@ namespace ComJanWpf.Views
             _dstPoint[2].Y = _dstPoint[0].Y + (int)Math.Round(lh);
             _dstPoint[3].X = _dstPoint[0].X;
             _dstPoint[3].Y = _dstPoint[2].Y;
-        }
-
-        private string _manpinsou = string.Empty;
-        private string _kazesangen = string.Empty;
-
-        private void ManPinSou_Click(object sender, RoutedEventArgs e)
-        {
-            RadioButton ctrl = sender as RadioButton;
-            _manpinsou = ctrl.Content.ToString();
-        }
-
-        private void KazeSangen_Click(object sender, RoutedEventArgs e)
-        {
-            RadioButton ctrl = sender as RadioButton;
-            _kazesangen = ctrl.Content.ToString();
         }
     }
 

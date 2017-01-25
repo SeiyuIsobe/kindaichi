@@ -42,13 +42,13 @@
         <Grid Grid.Column="0">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Vertical">
-                    <RadioButton x:Name="_manzu" Content="MANZU" Click="ManPinSou_Click"/>
-                    <RadioButton x:Name="_pinzu" Content="PINZU" Click="ManPinSou_Click"/>
-                    <RadioButton x:Name="_souzu" Content="SOUZU" Click="ManPinSou_Click"/>
+                    <RadioButton x:Name="_manzu" Content="MANZU" IsChecked="{Binding IsManzu}"/>
+                    <RadioButton x:Name="_pinzu" Content="PINZU" IsChecked="{Binding IsPinzu}"/>
+                    <RadioButton x:Name="_souzu" Content="SOUZU" IsChecked="{Binding IsSouzu}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <RadioButton x:Name="_kaze" Content="KAZE" Click="KazeSangen_Click"/>
-                    <RadioButton x:Name="_sangen" Content="SANGEN" Click="KazeSangen_Click"/>
+                    <RadioButton x:Name="_kaze" Content="KAZE" IsChecked="{Binding IsKaze}"/>
+                    <RadioButton x:Name="_sangen" Content="SANGEN" IsChecked="{Binding IsSangen}"/>
                 </StackPanel>
                 
                 
