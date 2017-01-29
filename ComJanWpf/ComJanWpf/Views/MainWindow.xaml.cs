@@ -92,7 +92,12 @@ namespace ComJanWpf.Views
                 // 初期値は低解像度をハイビジョン1920x1080に設定する
                 _device.VideoResolution = _device.Search(1920, 1080);
 
-                if(null != _device)
+                if(null == _device.VideoResolution)
+                {
+                    _device.VideoResolution = _device.Search(1280, 960);
+                }
+
+                if (null != _device)
                 {
                     _device.NewFrame += (ss, ee) =>
                     {
@@ -118,6 +123,10 @@ namespace ComJanWpf.Views
         private void _capturedImageBox_MouseDown(object sender, MouseButtonEventArgs e)
         {
             _capturedImageBox.Source = _picture.Source;
+
+            // 保存
+            BitmapSource bs = _capturedImageBox.Source as BitmapSource;
+            _mainVM.SaveSource(bs.ToBitmap(System.Drawing.Imaging.PixelFormat.Format32bppArgb));
         }
 
         private double CalcRealX(double x)
@@ -159,7 +168,7 @@ namespace ComJanWpf.Views
                 // 平面射影のための座標を計算する
                 CalcPaiRect();
 
-                _pctPai.Margin = new Thickness(_srcPoint[0].X, _srcPoint[0].Y, 0.0, 0.0);
+                //_pctPai.Margin = new Thickness(_srcPoint[0].X, _srcPoint[0].Y, 0.0, 0.0);
 
                 // 平面射影を得る
                 GetPerspectiveTransform();
@@ -184,7 +193,10 @@ namespace ComJanWpf.Views
                     _pctPaiList[i].Source = list[i].ToImageSource();
                 }
 
-                _mainVM.SavePai(list);
+                if(false == _loadBitmap_mode)
+                {
+                    _mainVM.SavePai(list);
+                }
             }
             
         }
@@ -216,63 +228,29 @@ namespace ComJanWpf.Views
             _dstPoint[3].X = _dstPoint[0].X;
             _dstPoint[3].Y = _dstPoint[2].Y;
         }
-    }
 
-    public static class BitmapHelper
-    {
-        public static Bitmap ToBitmap(this BitmapSource bitmapSource, System.Drawing.Imaging.PixelFormat pixelFormat)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int width = bitmapSource.PixelWidth;
-            int height = bitmapSource.PixelHeight;
-            int stride = width * ((bitmapSource.Format.BitsPerPixel + 7) / 8);  // 行の長さは色深度によらず8の倍数のため
-            IntPtr intPtr = IntPtr.Zero;
-            try
-            {
-                intPtr = Marshal.AllocCoTaskMem(height * stride);
-                bitmapSource.CopyPixels(new Int32Rect(0, 0, width, height), intPtr, height * stride, stride);
-                using (var bitmap = new Bitmap(width, height, stride, pixelFormat, intPtr))
-                {
-                    // IntPtrからBitmapを生成した場合、Bitmapが存在する間、AllocCoTaskMemで確保したメモリがロックされたままとなる
-                    // （FreeCoTaskMemするとエラーとなる）
-                    // そしてBitmapを単純に開放しても解放されない
-                    // このため、明示的にFreeCoTaskMemを呼んでおくために一度作成したBitmapから新しくBitmapを
-                    // 再作成し直しておくとメモリリークを抑えやすい
-                    return new Bitmap(bitmap);
-                }
-            }
-            finally
-            {
-                if (intPtr != IntPtr.Zero)
-                    Marshal.FreeCoTaskMem(intPtr);
-            }
+            LoadBitmap();
         }
 
-        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DeleteObject([In] IntPtr hObject);
-
-        public static ImageSource ToImageSource(this Bitmap bmp)
+        private bool _loadBitmap_mode = false;
+        private void LoadBitmap()
         {
-            var handle = bmp.GetHbitmap();
-            try
+            Bitmap bp = new Bitmap(@"C: \Users\ISeiy\Documents\ComJanData\Outdata\Source\m-707073601.bmp");
+            _capturedImageBox.Dispatcher.Invoke(() =>
             {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            }
-            finally { DeleteObject(handle); }
-        }
+                _capturedImageBox.Source = bp.ToImageSource();
+            });
 
-        public static VideoCapabilities Search(this VideoCaptureDevice device, int width, int height)
-        {
-            foreach(var cap in device.VideoCapabilities)
-            {
-                if(cap.FrameSize.Width == width && cap.FrameSize.Height == height)
-                {
-                    return cap;
-                }
-            }
+            // ピクセル計算用
+            _video_width = bp.Width;
+            _video_hight = bp.Height;
 
-            return null;
+            _loadBitmap_mode = true;
         }
     }
+
+    
     
 }

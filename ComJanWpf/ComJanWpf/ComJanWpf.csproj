@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Models\Model.cs" />
     <Compile Include="ViewModels\Affine.cs" />
+    <Compile Include="ViewModels\BitmapHelper.cs" />
     <Compile Include="ViewModels\BitmapToBitmapFrame.cs" />
     <Compile Include="ViewModels\ComJanEngine.cs" />
     <Compile Include="ViewModels\DeviceFilters.cs" />

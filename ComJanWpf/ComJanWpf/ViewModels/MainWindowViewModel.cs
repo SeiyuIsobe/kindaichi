@@ -12,6 +12,7 @@ using Livet.EventListeners;
 using Livet.Messaging.Windows;
 
 using ComJanWpf.Models;
+using System.Drawing;
 
 namespace ComJanWpf.ViewModels
 {
@@ -61,7 +62,7 @@ namespace ComJanWpf.ViewModels
         private string _manpinsou = string.Empty;
         private string _kazesangen = string.Empty;
         
-        private bool _isManzu = true;
+        private bool _isManzu = false;
 
         public bool IsManzu
         {
@@ -95,7 +96,7 @@ namespace ComJanWpf.ViewModels
                 if (true == _isSouzu) _manpinsou = "SOUZU";
             }
         }
-        private bool _isKaze = true;
+        private bool _isKaze = false;
 
         public bool IsKaze
         {
@@ -162,6 +163,12 @@ namespace ComJanWpf.ViewModels
             }
         }
 
+        internal void SaveSource(Bitmap bitmap)
+        {
+            var outdatapath = GetBitmapPath(_outdatapath, "Source");
+            bitmap.Save(outdatapath);
+        }
+
         private static void Save(System.Drawing.Bitmap bitmap, string bitmappath)
         {
 
@@ -187,6 +194,11 @@ namespace ComJanWpf.ViewModels
             bitmappath = outputfolder + "\\" + "m" + bitmappath.GetHashCode().ToString() + ".bmp";
 
             return bitmappath;
+        }
+
+        public void LoadBitmap()
+        {
+
         }
     }
 }

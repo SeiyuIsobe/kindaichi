@@ -6,7 +6,7 @@
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:v="clr-namespace:ComJanWpf.Views"
         xmlns:vm="clr-namespace:ComJanWpf.ViewModels"
-        Title="MainWindow" Height="1000" Width="1500"
+        Title="MainWindow" Height="auto" Width="auto"
         Loaded="Window_Loaded">
 
     <Window.DataContext>
@@ -50,35 +50,39 @@
                     <RadioButton x:Name="_kaze" Content="KAZE" IsChecked="{Binding IsKaze}"/>
                     <RadioButton x:Name="_sangen" Content="SANGEN" IsChecked="{Binding IsSangen}"/>
                 </StackPanel>
-                
-                
+                <Button Content="読み込み" Click="Button_Click"/>
+
             </StackPanel>
         </Grid>
         
         <Grid VerticalAlignment="Center" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Margin="30,0,30,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Image x:Name="_picture" MouseDown="_capturedImageBox_MouseDown" Width="600" Height="337" Grid.Column="0"/>
+                <Image x:Name="_picture" MouseDown="_capturedImageBox_MouseDown" Width="600" Height="337"  Grid.Column="0">
+                    <Image.Effect>
+                        <DropShadowEffect BlurRadius="15" Opacity="0.5" ShadowDepth="15"/>
+                    </Image.Effect>
+                </Image>
                 <Image x:Name="_capturedImageBox" Width="600" Height="337" MouseDown="_capturedImageBox_MouseDown_1" Grid.Column="1"/>
                 
             </Grid>
 
-            <Image x:Name="_pctStill" Width="400" Height="225" Grid.Row="1"/>
+            <Image x:Name="_pctStill" Width="400" Height="75" Grid.Row="1"/>
             
             <!--<Rectangle x:Name="_pctPai" StrokeThickness="2" Width="300" Height="300" Stroke="#FF0FCF0F" Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>-->
 
-            <Grid Grid.Row="2">
-                <Image x:Name="_pctPai" Width="993" Height="75"/>
+            <Grid Grid.Row="2" Height="75">
+                <!--<Image x:Name="_pctPai" Width="993" Height="75"/>-->
             </Grid>
             <Grid Grid.Row="3">
                 <Grid.Resources>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using ComJanWpf.ViewModels;
 
 namespace ComJan
 {
@@ -31,6 +32,7 @@ namespace ComJan
         public List<Bitmap> InputTehai(Bitmap b)
         {
             System.Diagnostics.Debug.WriteLine("b.Width = " + b.Width);
+            b.Save(@"C:\Users\ISeiy\Documents\ComJanData\temp\bb_still.bmp");
 
             // クリア
             _tehai_moto.Clear();
@@ -42,7 +44,7 @@ namespace ComJan
                 double x0 = Math.Round((double)b.Width / (double)PAI_NUM * i);
                 double sx = Math.Round((double)b.Width / (double)PAI_NUM);
 
-                // 一回目の切り出し
+                // 14等分の切り出し
                 Rectangle r0 = new Rectangle((int)(x0), 0, (int)(sx), b.Height);
                 Rectangle r = new Rectangle(0, 0, (int)(sx), b.Height);
 
@@ -51,53 +53,81 @@ namespace ComJan
                 {
                     g.DrawImage(b, r, r0, GraphicsUnit.Pixel);
                 }
-                //bb.Save("a" + i.ToString() + ".bmp");
+                //bb.Save(@"C:\Users\ISeiy\Documents\ComJanData\temp\bb_" + i.ToString() + ".bmp");
 
-                //// 補正
-                //Point wp = CalcWeightPoint(TwoColorscale(bb, 100));
-                //int sx_center = (int)(Math.Round((double)sx / 2.0));
-                //int hosei = 0;
-                //if (sx_center > wp.X) // 左にズレている
-                //{
-                //    hosei = sx_center - wp.X;
-                //}
-                //else if (sx_center < wp.X) // 右にズレている
-                //{
-                //    hosei = wp.X - sx_center;
-                //}
-                //else
-                //{
-                //}
-                
-                //{
-                //    bb.Dispose();
-                //    r0 = new Rectangle((int)(x0) - hosei, 0, (int)(sx), b.Height);
-                //    r = new Rectangle(0, 0, (int)(sx), b.Height);
-                //    Bitmap bb2 = new Bitmap((int)sx, b.Height);
-                //    using (Graphics g = Graphics.FromImage(bb2))
-                //    {
-                //        g.DrawImage(b, r, r0, GraphicsUnit.Pixel);
-                //    }
-                //    if ((int)(x0) - hosei < 0) // いちばん左端
-                //    {
-                //        for (int w = 0; w < hosei - (int)x0; w++)
-                //        {
-                //            for (int h = 0; h < bb2.Height; h++)
-                //            {
-                //                bb2.SetPixel(w, h, Color.White);
-                //            }
-                //        }
-                //    }
-                //    //System.Diagnostics.Debug.WriteLine(x0.ToString());
-                //    //bb2.Save("c" + i.ToString() + ".bmp");
-                //    //BpSolution.GrayScale.TwoColorscale(bb2, 100, "d" + i.ToString() + ".bmp");
-                //    bb = bb2;
-                //}
+                // 14等分の幅に対して左右10px
+                Bitmap base_bb = GetBaseBitmap(b, i);
+
+                bb = GetBitmap(base_bb, bb);
 
                 _tehai_moto.Add(bb);
             }
 
             return _tehai_moto;
+        }
+
+        /// <summary>
+        /// 1px横にずらしながら探索する
+        /// </summary>
+        /// <param name="base_bb"></param>
+        /// <param name="bb"></param>
+        /// <returns></returns>
+        private Bitmap GetBitmap(Bitmap base_bb, Bitmap bb)
+        {
+            Rectangle r = new Rectangle(0, 0, bb.Width, bb.Height);
+
+            int justfit = 0;
+            double sa = -1.0;
+            Bitmap justbmp = new Bitmap(1, 1);
+
+            // 1px横にずらす
+            for (int i = 0; i < base_bb.Width - bb.Width; i++)
+            {
+                Rectangle r0 = new Rectangle(i, 0, bb.Width, bb.Height);
+
+                Bitmap b0 = new Bitmap(bb.Width, bb.Height);
+                using (Graphics g = Graphics.FromImage(b0))
+                {
+                    g.DrawImage(base_bb, r, r0, GraphicsUnit.Pixel);
+                }
+
+                //b0.Save(@"C:\Users\ISeiy\Documents\ComJanData\temp\b0_" + i.ToString() + ".bmp");
+
+                // 比べる
+                double sa_temp = b0.Comp(bb);
+                if(sa < 0.0 || sa > sa_temp)
+                {
+                    sa = sa_temp;
+                    justfit = i;
+                    justbmp = b0;
+
+                    //System.Diagnostics.Debug.WriteLine($"fit: i = {i}, sa = {sa}");
+                }
+            }
+
+            System.Diagnostics.Debug.WriteLine($"{justfit}pxで最も一致 -> 類似度：{sa}");
+            return justbmp;
+        }
+
+        private Bitmap GetBaseBitmap(Bitmap b, int i)
+        {
+            int haba = 10;
+
+            double x0 = Math.Round((double)b.Width / (double)PAI_NUM * i) - (double)haba;
+            double sx = Math.Round((double)b.Width / (double)PAI_NUM) + 2.0 * (double)haba;
+
+            // 14等分の切り出し
+            Rectangle r0 = new Rectangle((int)(x0), 0, (int)(sx), b.Height);
+            Rectangle r = new Rectangle(0, 0, (int)(sx), b.Height);
+
+            Bitmap bb = new Bitmap((int)sx, b.Height);
+            using (Graphics g = Graphics.FromImage(bb))
+            {
+                g.DrawImage(b, r, r0, GraphicsUnit.Pixel);
+            }
+
+            bb.Save(@"C:\Users\ISeiy\Documents\ComJanData\temp\" + i.ToString() + ".bmp");
+            return bb;
         }
 
         private Point CalcWeightPoint(Bitmap bb)
@@ -187,5 +217,7 @@ namespace ComJan
 
             return bmp;
         }
+
+        
     }
 }
