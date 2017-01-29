@@ -194,10 +194,10 @@ namespace ComJanWpf.Views
                     _pctPaiList[i].Source = list[i].ToImageSource();
                 }
 
-                if(false == _loadBitmap_mode)
-                {
-                    _mainVM.SavePai(list);
-                }
+                //if(false == _loadBitmap_mode)
+                //{
+                //    _mainVM.SavePai(list);
+                //}
 
                 _paiList = list;
             }
