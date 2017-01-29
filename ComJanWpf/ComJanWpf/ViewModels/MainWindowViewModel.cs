@@ -14,6 +14,7 @@ using Livet.Messaging.Windows;
 using ComJanWpf.Models;
 using System.Drawing;
 using ComJan;
+using System.Diagnostics;
 
 namespace ComJanWpf.ViewModels
 {
@@ -149,6 +150,12 @@ namespace ComJanWpf.ViewModels
                         }
                     }
                 }
+
+                System.Diagnostics.Debug.WriteLine("マンズ、ピンズ、ソウズを保存しました");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("マンズ、ピンズ、ソウズが選ばれてないので保存しません");
             }
 
             if (true == _isKaze)
@@ -174,6 +181,8 @@ namespace ComJanWpf.ViewModels
                         }
                     }
                 }
+
+                Debug.WriteLine("風牌を保存しました");
             }
             else if (true == _isSangen)
             {
@@ -198,6 +207,12 @@ namespace ComJanWpf.ViewModels
                         }
                     }
                 }
+
+                System.Diagnostics.Debug.WriteLine("三元牌を保存しました");
+            }
+            else
+            {
+                Debug.WriteLine("風牌か三元牌を選択していないので保存しません");
             }
         }
 
