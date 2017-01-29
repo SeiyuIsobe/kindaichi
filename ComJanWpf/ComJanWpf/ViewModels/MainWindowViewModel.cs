@@ -13,6 +13,7 @@ using Livet.Messaging.Windows;
 
 using ComJanWpf.Models;
 using System.Drawing;
+using ComJan;
 
 namespace ComJanWpf.ViewModels
 {
@@ -108,6 +109,7 @@ namespace ComJanWpf.ViewModels
             }
         }
         private bool _isSangen = false;
+        private bool _isCreatedStudyData = false;
 
         public bool IsSangen
         {
@@ -133,6 +135,14 @@ namespace ComJanWpf.ViewModels
 
                 // 保存
                 Save(list[i-1], bitmappath);
+
+                // 学習データ
+                if(true == _isCreatedStudyData)
+                {
+                    var bmp = CreateStudyData(list[i - 1]);
+                    var bmp_path = GetBitmapPath(outdatapath, i.ToString());
+                    Save(bmp, bmp_path);
+                }
             }
 
             if (true == _isKaze)
@@ -146,6 +156,14 @@ namespace ComJanWpf.ViewModels
 
                     // 保存
                     Save(list[i + 8], bitmappath);
+
+                    // 学習データ
+                    if (true == _isCreatedStudyData)
+                    {
+                        var bmp = CreateStudyData(list[i + 8]);
+                        var bmp_path = GetBitmapPath(outdatapath, kaze[i - 1]);
+                        Save(bmp, bmp_path);
+                    }
                 }
             }
             else if (true == _isSangen)
@@ -159,6 +177,14 @@ namespace ComJanWpf.ViewModels
 
                     // 保存
                     Save(list[i + 8], bitmappath);
+
+                    // 学習データ
+                    if (true == _isCreatedStudyData)
+                    {
+                        var bmp = CreateStudyData(list[i + 8]);
+                        var bmp_path = GetBitmapPath(outdatapath, sangen[i - 1]);
+                        Save(bmp, bmp_path);
+                    }
                 }
             }
         }
@@ -199,6 +225,70 @@ namespace ComJanWpf.ViewModels
         public void LoadBitmap()
         {
 
+        }
+
+        public Bitmap CreateStudyData(Bitmap bmp)
+        {
+            Point[] src = new Point[4];
+            src[0] = new Point(0, 0);
+            src[1] = new Point(bmp.Width, 0);
+            src[2] = new Point(bmp.Width, bmp.Height);
+            src[3] = new Point(0, bmp.Height);
+
+            Point[] dst = new Point[4];
+            dst[0] = GetRandomPoint(src[0], (double)bmp.Width / 3.0);
+            dst[1] = GetRandomPoint(src[1], (double)bmp.Width / 3.0);
+            dst[2] = GetRandomPoint(src[2], (double)bmp.Width / 3.0);
+            dst[3] = GetRandomPoint(src[3], (double)bmp.Width / 3.0);
+
+            Affine aff = new Affine();
+            Bitmap bb = aff.CalcAffine(bmp, dst, src);
+            return bb;
+        }
+
+        public Point GetRandomPoint(Point p0, double hankei)
+        {
+            Random r = new Random(); // seed値は小数部の4桁だけ使う
+
+            int v = r.Next(0, 90); // 0から90度の範囲
+            double s = (double)r.Next(0, 150) / 100.0; // 0から1.5倍の範囲
+
+            Point ret = new Point(0, 0);
+
+            double x = hankei * s * Math.Cos(Math.PI * (double)v / 180.0);
+            double y = hankei * s * Math.Sin(Math.PI * (double)v / 180.0);
+
+            // 左上 -> (0, 0)
+            if (0 == p0.X && 0 == p0.Y)
+            {
+                ret = new Point((int)x, (int)y);
+            }
+            else if(0 < p0.X && 0 == p0.Y) // 右上
+            {
+                ret = new Point(p0.X - (int)y, (int)x);
+            }
+            else if(0 < p0.X && 0 < p0.Y) // 右下
+            {
+                ret = new Point(p0.X - (int)x, p0.Y - (int)y);
+            }
+            else if(0 == p0.X && 0 < p0.Y) // 左下
+            {
+                ret = new Point((int)y, p0.Y - (int)x);
+            }
+
+            return ret;
+        }
+
+        public bool IsCreatedStudyData
+        {
+            get
+            {
+                return _isCreatedStudyData;
+            }
+            set
+            {
+                _isCreatedStudyData = value;
+            }
         }
     }
 }

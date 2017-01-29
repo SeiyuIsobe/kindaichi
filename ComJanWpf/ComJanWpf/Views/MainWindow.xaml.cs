@@ -152,6 +152,7 @@ namespace ComJanWpf.Views
         private System.Drawing.Point[] _srcPoint = new[] { new System.Drawing.Point(), new System.Drawing.Point(), new System.Drawing.Point(), new System.Drawing.Point() };
         private System.Drawing.Point[] _dstPoint = new[] { new System.Drawing.Point(), new System.Drawing.Point(), new System.Drawing.Point(), new System.Drawing.Point() };
         private int _numPointClick = 0;
+        private List<Bitmap> _paiList = null;
 
         private void _capturedImageBox_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
@@ -197,6 +198,8 @@ namespace ComJanWpf.Views
                 {
                     _mainVM.SavePai(list);
                 }
+
+                _paiList = list;
             }
             
         }
@@ -248,6 +251,19 @@ namespace ComJanWpf.Views
             _video_hight = bp.Height;
 
             _loadBitmap_mode = true;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (null == _paiList) return;
+
+            foreach(var bmp in _paiList)
+            {
+                for(int i = 0; i < 100; i++)
+                {
+                    _mainVM.CreateStudyData(bmp);
+                }
+            }
         }
     }
 

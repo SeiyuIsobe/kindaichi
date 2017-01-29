@@ -5,16 +5,30 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComJanWpf", "ComJanWpf\ComJanWpf.csproj", "{E5D2EB74-7DDD-4D08-98C0-3610783C1D64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComJanWpfTests", "ComJanWpfTests\ComJanWpfTests.csproj", "{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5D2EB74-7DDD-4D08-98C0-3610783C1D64}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{E5D2EB74-7DDD-4D08-98C0-3610783C1D64}.Debug|x86.ActiveCfg = Debug|x86
 		{E5D2EB74-7DDD-4D08-98C0-3610783C1D64}.Debug|x86.Build.0 = Debug|x86
+		{E5D2EB74-7DDD-4D08-98C0-3610783C1D64}.Release|Any CPU.ActiveCfg = Release|x86
 		{E5D2EB74-7DDD-4D08-98C0-3610783C1D64}.Release|x86.ActiveCfg = Release|x86
 		{E5D2EB74-7DDD-4D08-98C0-3610783C1D64}.Release|x86.Build.0 = Release|x86
+		{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}.Debug|x86.Build.0 = Debug|Any CPU
+		{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7BA38216-7CF3-4D9F-B0CD-78EF26E8538E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

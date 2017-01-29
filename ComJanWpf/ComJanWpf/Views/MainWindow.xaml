@@ -51,6 +51,7 @@
                     <RadioButton x:Name="_sangen" Content="SANGEN" IsChecked="{Binding IsSangen}"/>
                 </StackPanel>
                 <Button Content="読み込み" Click="Button_Click"/>
+                <CheckBox Content="学習データ作成" IsChecked="{Binding IsCreatedStudyData}"/>
 
             </StackPanel>
         </Grid>
