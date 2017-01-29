@@ -126,24 +126,27 @@ namespace ComJanWpf.ViewModels
             string[] kaze = new string[] { "ton", "nan", "sha", "pee" };
             string[] sangen = new string[] { "haku", "hatu", "chun" };
 
-            for (int i = 1; i <= 9; i++)
+            if(string.Empty != _manpinsou)
             {
-                var outdatapath = _outdatapath + "\\" + _manpinsou;
-
-                // 出力先フォルダ（1～9）
-                var bitmappath = GetBitmapPath(outdatapath, i.ToString());
-
-                // 保存
-                Save(list[i-1], bitmappath);
-
-                // 学習データ
-                if(true == _isCreatedStudyData)
+                for (int i = 1; i <= 9; i++)
                 {
-                    for(int k = 0; k < 100; k++)
+                    var outdatapath = _outdatapath + "\\" + _manpinsou;
+
+                    // 出力先フォルダ（1～9）
+                    var bitmappath = GetBitmapPath(outdatapath, i.ToString());
+
+                    // 保存
+                    Save(list[i - 1], bitmappath);
+
+                    // 学習データ
+                    if (true == _isCreatedStudyData)
                     {
-                        var bmp = CreateStudyData(list[i - 1]);
-                        var bmp_path = GetBitmapPath(outdatapath, i.ToString());
-                        Save(bmp, bmp_path);
+                        for (int k = 0; k < 100; k++)
+                        {
+                            var bmp = CreateStudyData(list[i - 1]);
+                            var bmp_path = GetBitmapPath(outdatapath, i.ToString());
+                            Save(bmp, bmp_path);
+                        }
                     }
                 }
             }
@@ -245,10 +248,10 @@ namespace ComJanWpf.ViewModels
             src[3] = new Point(0, bmp.Height);
 
             Point[] dst = new Point[4];
-            dst[0] = GetRandomPoint(src[0], (double)bmp.Width / 3.0);
-            dst[1] = GetRandomPoint(src[1], (double)bmp.Width / 3.0);
-            dst[2] = GetRandomPoint(src[2], (double)bmp.Width / 3.0);
-            dst[3] = GetRandomPoint(src[3], (double)bmp.Width / 3.0);
+            dst[0] = GetRandomPoint(src[0], (double)bmp.Width / 5.0);
+            dst[1] = GetRandomPoint(src[1], (double)bmp.Width / 5.0);
+            dst[2] = GetRandomPoint(src[2], (double)bmp.Width / 5.0);
+            dst[3] = GetRandomPoint(src[3], (double)bmp.Width / 5.0);
 
             Affine aff = new Affine();
             Bitmap bb = aff.CalcAffine(bmp, dst, src);

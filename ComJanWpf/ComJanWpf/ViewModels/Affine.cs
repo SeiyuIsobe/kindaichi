@@ -49,30 +49,30 @@ namespace ComJan
                     // (3)指定されたアフィン行列により，cvWarpAffineを用いて画像を回転させる
                     Cv.WarpPerspective(srcImg, dstImg, mapMatrix, Interpolation.Linear | Interpolation.FillOutliers, CvScalar.ScalarAll(0));
 
-                    System.Diagnostics.Debug.WriteLine("srcPoint");
-                    for (int i = 0; i < 4; i++)
-                    {
-                        System.Diagnostics.Debug.WriteLine(srcPoint[i].X.ToString() + "\t" + srcPoint[i].Y.ToString());
-                    }
+                    //System.Diagnostics.Debug.WriteLine("srcPoint");
+                    //for (int i = 0; i < 4; i++)
+                    //{
+                    //    System.Diagnostics.Debug.WriteLine(srcPoint[i].X.ToString() + "\t" + srcPoint[i].Y.ToString());
+                    //}
 
-                    System.Diagnostics.Debug.WriteLine("");
+                    //System.Diagnostics.Debug.WriteLine("");
 
-                    System.Diagnostics.Debug.WriteLine("dstPoint");
-                    for (int i = 0; i < 4; i++)
-                    {
-                        System.Diagnostics.Debug.WriteLine(dstPoint[i].X.ToString() + "\t" + dstPoint[i].Y.ToString());
-                    }
+                    //System.Diagnostics.Debug.WriteLine("dstPoint");
+                    //for (int i = 0; i < 4; i++)
+                    //{
+                    //    System.Diagnostics.Debug.WriteLine(dstPoint[i].X.ToString() + "\t" + dstPoint[i].Y.ToString());
+                    //}
 
-                    System.Diagnostics.Debug.WriteLine("");
+                    //System.Diagnostics.Debug.WriteLine("");
 
-                    for (int r = 0; r < mapMatrix.Rows; r++)
-                    {
-                        for (int c = 0; c < mapMatrix.Cols; c++)
-                        {
-                            System.Diagnostics.Debug.Write(mapMatrix[r][c].ToString() + "\t");
-                        }
-                        System.Diagnostics.Debug.WriteLine("");
-                    }
+                    //for (int r = 0; r < mapMatrix.Rows; r++)
+                    //{
+                    //    for (int c = 0; c < mapMatrix.Cols; c++)
+                    //    {
+                    //        System.Diagnostics.Debug.Write(mapMatrix[r][c].ToString() + "\t");
+                    //    }
+                    //    System.Diagnostics.Debug.WriteLine("");
+                    //}
 
                     // (4)結果を表示する
                     return dstImg.ToBitmap();
