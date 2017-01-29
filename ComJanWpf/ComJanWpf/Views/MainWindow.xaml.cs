@@ -255,15 +255,7 @@ namespace ComJanWpf.Views
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (null == _paiList) return;
-
-            foreach(var bmp in _paiList)
-            {
-                for(int i = 0; i < 100; i++)
-                {
-                    _mainVM.CreateStudyData(bmp);
-                }
-            }
+            _mainVM.SavePai(_paiList);
         }
     }
 

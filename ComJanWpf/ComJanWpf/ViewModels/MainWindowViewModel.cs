@@ -139,9 +139,12 @@ namespace ComJanWpf.ViewModels
                 // 学習データ
                 if(true == _isCreatedStudyData)
                 {
-                    var bmp = CreateStudyData(list[i - 1]);
-                    var bmp_path = GetBitmapPath(outdatapath, i.ToString());
-                    Save(bmp, bmp_path);
+                    for(int k = 0; k < 100; k++)
+                    {
+                        var bmp = CreateStudyData(list[i - 1]);
+                        var bmp_path = GetBitmapPath(outdatapath, i.ToString());
+                        Save(bmp, bmp_path);
+                    }
                 }
             }
 
@@ -160,9 +163,12 @@ namespace ComJanWpf.ViewModels
                     // 学習データ
                     if (true == _isCreatedStudyData)
                     {
-                        var bmp = CreateStudyData(list[i + 8]);
-                        var bmp_path = GetBitmapPath(outdatapath, kaze[i - 1]);
-                        Save(bmp, bmp_path);
+                        for (int k = 0; k < 100; k++)
+                        {
+                            var bmp = CreateStudyData(list[i + 8]);
+                            var bmp_path = GetBitmapPath(outdatapath, kaze[i - 1]);
+                            Save(bmp, bmp_path);
+                        }
                     }
                 }
             }
@@ -181,9 +187,12 @@ namespace ComJanWpf.ViewModels
                     // 学習データ
                     if (true == _isCreatedStudyData)
                     {
-                        var bmp = CreateStudyData(list[i + 8]);
-                        var bmp_path = GetBitmapPath(outdatapath, sangen[i - 1]);
-                        Save(bmp, bmp_path);
+                        for (int k = 0; k < 100; k++)
+                        {
+                            var bmp = CreateStudyData(list[i + 8]);
+                            var bmp_path = GetBitmapPath(outdatapath, sangen[i - 1]);
+                            Save(bmp, bmp_path);
+                        }
                     }
                 }
             }

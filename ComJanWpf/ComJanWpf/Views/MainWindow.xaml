@@ -52,6 +52,7 @@
                 </StackPanel>
                 <Button Content="読み込み" Click="Button_Click"/>
                 <CheckBox Content="学習データ作成" IsChecked="{Binding IsCreatedStudyData}"/>
+                <Button Content="もう一度" Click="Button_Click_1"/>
 
             </StackPanel>
         </Grid>
