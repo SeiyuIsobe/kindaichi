@@ -68,22 +68,25 @@ namespace ComJanWpf.Views
         }
 
         private MainWindowViewModel _mainVM = null;
+        private string _loadfile = @"C:\Users\s-isobe\Pictures\sample.jpg";
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _mainVM = this.DataContext as MainWindowViewModel;
+            _mainVM.Messenger.Raised += (ss, ee) =>
+            {
+                switch(ee.Message.MessageKey)
+                {
+                    case "OpenCommandMessage":
+                        _loadfile = _mainVM.OpenFilePath;
+                        LoadBitmapFile(_capturedImageBox);
+                        break;
+                }
+            };
 
             if(null == _selectCamera)
             {
-                Bitmap bp = new Bitmap(@"C:\Users\s-isobe\Pictures\sample.jpg");
-                _picture.Dispatcher.Invoke(() =>
-                {
-                    _picture.Source = bp.ToImageSource();
-                });
-
-                // ピクセル計算用
-                _video_width = bp.Width;
-                _video_hight = bp.Height;
+                LoadBitmapFile(_picture);
             }
             else
             {
@@ -116,6 +119,19 @@ namespace ComJanWpf.Views
                     _device.Start();
                 }
             }
+        }
+
+        private void LoadBitmapFile(System.Windows.Controls.Image img)
+        {
+            Bitmap bp = new Bitmap(_loadfile);
+            img.Dispatcher.Invoke(() =>
+            {
+                img.Source = bp.ToImageSource();
+            });
+
+            // ピクセル計算用
+            _video_width = bp.Width;
+            _video_hight = bp.Height;
         }
 
         private int _video_width = 0;
@@ -257,6 +273,21 @@ namespace ComJanWpf.Views
         {
             _mainVM.SavePai(_paiList);
         }
+
+        private void _capturedImageBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            IInputElement iip = sender as IInputElement;
+            var p = e.GetPosition(iip);
+            //Debug.WriteLine($"-> ({p.X}, {p.Y}");
+
+            // 画像上の位置
+            System.Windows.Point preal = new System.Windows.Point(CalcRealX(p.X), CalcRealY(p.Y));
+
+            var bmp = BitmapHelper.CutFrom(_capturedImageBox.Source, (int)(preal.X - 10), (int)(preal.Y - 10), 20, 20);
+
+            _pointer.Source = bmp.ToImageSource();
+        }
+        
     }
 
     

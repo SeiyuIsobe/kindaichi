@@ -96,5 +96,21 @@ namespace ComJanWpf.ViewModels
             return ret;
         }
 
+        public static Bitmap CutFrom(ImageSource src, int x, int y, int w, int h)
+        {
+            return CutFrom(((BitmapSource)src).ToBitmap(System.Drawing.Imaging.PixelFormat.Format32bppArgb), x, y, w, h);
+        }
+
+        public static Bitmap CutFrom(Bitmap src, int x, int y, int w, int h)
+        {
+            Bitmap dest = new Bitmap(w, h);
+            Graphics g = Graphics.FromImage(dest);
+            Rectangle srcRect = new Rectangle(x, y, w, h);
+            Rectangle desRect = new Rectangle(0, 0, w, h);
+            g.DrawImage(src, desRect, srcRect, GraphicsUnit.Pixel);
+            g.Dispose();
+            return dest;
+        }
+
     }
 }

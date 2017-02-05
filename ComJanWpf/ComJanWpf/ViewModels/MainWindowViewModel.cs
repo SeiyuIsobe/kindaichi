@@ -118,7 +118,7 @@ namespace ComJanWpf.ViewModels
             set
             {
                 _isSangen = value;
-                if (true == _isKaze) _kazesangen = "SANGEN";
+                if (true == _isSangen) _kazesangen = "SANGEN";
             }
         }
 
@@ -231,7 +231,11 @@ namespace ComJanWpf.ViewModels
             }
             else
             {
-                bitmap.Save(bitmappath);
+                //bitmap.Save(bitmappath);
+
+                // jpeg
+                bitmappath = bitmappath.Replace(".bmp", ".jpg");
+                bitmap.Save(bitmappath, System.Drawing.Imaging.ImageFormat.Jpeg);
             }
         }
 
@@ -317,5 +321,34 @@ namespace ComJanWpf.ViewModels
                 _isCreatedStudyData = value;
             }
         }
+
+        #region OpenCommand
+        private ListenerCommand<OpeningFileSelectionMessage> _openCommand = null;
+        public ListenerCommand<OpeningFileSelectionMessage> OpenCommand
+        {
+            get
+            {
+                if(null == _openCommand)
+                {
+                    _openCommand = new ListenerCommand<OpeningFileSelectionMessage>(
+                        new Action<OpeningFileSelectionMessage>((s) =>
+                        {
+                            OpeningFileSelectionMessage m = s as OpeningFileSelectionMessage;
+                            if (null != m)
+                            {
+                                foreach(var ss in m.Response)
+                                {
+                                    this.OpenFilePath = ss;
+                                    Messenger.Raise(new WindowActionMessage("OpenCommandMessage"));
+                                    break;
+                                }
+                            }
+                        }));
+                }
+                return _openCommand;
+            }
+        }
+        public string OpenFilePath { get; set; }
+        #endregion
     }
 }

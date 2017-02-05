@@ -32,7 +32,6 @@ namespace ComJan
         public List<Bitmap> InputTehai(Bitmap b)
         {
             System.Diagnostics.Debug.WriteLine("b.Width = " + b.Width);
-            //b.Save(@"C:\Users\ISeiy\Documents\ComJanData\temp\bb_still.bmp");
 
             // クリア
             _tehai_moto.Clear();
@@ -53,7 +52,6 @@ namespace ComJan
                 {
                     g.DrawImage(b, r, r0, GraphicsUnit.Pixel);
                 }
-                //bb.Save(@"C:\Users\ISeiy\Documents\ComJanData\temp\bb_" + i.ToString() + ".bmp");
 
                 _tehai_moto.Add(bb);
             }

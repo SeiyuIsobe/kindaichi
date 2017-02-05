@@ -53,6 +53,17 @@
                 <Button Content="読み込み" Click="Button_Click"/>
                 <CheckBox Content="学習データ作成" IsChecked="{Binding IsCreatedStudyData}"/>
                 <Button Content="もう一度" Click="Button_Click_1"/>
+                <Button Content="開く">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <l:OpenFileDialogInteractionMessageAction>
+                                <l:DirectInteractionMessage CallbackCommand="{Binding OpenCommand, Mode=OneWay}">
+                                    <l:OpeningFileSelectionMessage Filter="すべてのファイル(*.*)|*.*" Title="ファイルを開く" MultiSelect="True"/>
+                                </l:DirectInteractionMessage>
+                            </l:OpenFileDialogInteractionMessageAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
             </StackPanel>
         </Grid>
@@ -75,7 +86,10 @@
                         <DropShadowEffect BlurRadius="15" Opacity="0.5" ShadowDepth="15"/>
                     </Image.Effect>
                 </Image>
-                <Image x:Name="_capturedImageBox" Width="600" Height="337" MouseDown="_capturedImageBox_MouseDown_1" Grid.Column="1"/>
+                <Grid Grid.Column="1">
+                    <Image x:Name="_capturedImageBox" Width="600" Height="337" MouseDown="_capturedImageBox_MouseDown_1" MouseMove="_capturedImageBox_MouseMove"/>
+                    <Image Width="80" Height="80" x:Name="_pointer" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                </Grid>
                 
             </Grid>
 
