@@ -79,5 +79,20 @@ namespace ComJan
                 }
             }
         }
+
+        public Bitmap Resize(Bitmap bmp, Point[] srcPoint, Point[] dstPoint)
+        {
+            using (IplImage srcImg = BitmapConverter.ToIplImage(bmp))
+            {
+                CvSize size = new CvSize(dstPoint[1].X - dstPoint[0].X + 1, dstPoint[2].Y - dstPoint[1].Y + 1);
+
+                using (IplImage dstImg = new IplImage(size, srcImg.Depth, srcImg.NChannels))
+                {
+                    Cv.Resize(srcImg, dstImg, Interpolation.Lanczos4);
+
+                    return dstImg.ToBitmap();
+                }
+            }
+        }
     }
 }

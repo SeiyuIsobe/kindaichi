@@ -102,6 +102,7 @@ namespace ComJan
             return justbmp;
         }
 
+        [Obsolete("dont use", true)]
         private Bitmap GetBaseBitmap(Bitmap b, int i)
         {
             int haba = 10;
@@ -189,14 +190,16 @@ namespace ComJan
             return 0;
         }
 
-        public Bitmap TwoColorscale(Bitmap bmp, int nichi)
+        static public Bitmap TwoColorscale(Bitmap bmp, int nichi)
         {
             // 二値化
             for (int w = 0; w < bmp.Width; w++)
             {
                 for (int h = 0; h < bmp.Height; h++)
                 {
-                    if (bmp.GetPixel(w, h).R >= nichi)
+                    if (bmp.GetPixel(w, h).R >= nichi &&
+                        bmp.GetPixel(w, h).G >= nichi &&
+                        bmp.GetPixel(w, h).B >= nichi)
                     {
                         bmp.SetPixel(w, h, Color.White);
                     }

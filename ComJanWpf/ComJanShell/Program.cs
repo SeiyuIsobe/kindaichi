@@ -12,8 +12,15 @@ namespace ComJanShell
     {
         static void Main(string[] args)
         {
-            string cmd = "curl.exe";
-            string arg = "\"https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key=309369312becca2f4209ca0ae4a3e2c05aa8aa93&version=2016-05-20\"";
+            string hyoka_file = @"C:\Users\seiyu\Documents\ComJanData\Outdata\SANGEN\hatu\m1194131818.jpg";
+            string myparam_file = @"C:\Users\seiyu\Documents\ComJanData\myparams.json";
+
+            string cmd = "curl.exe ";
+            string post = "-X POST ";
+            string images_file = "-F \"images_file=@" + hyoka_file + "\" ";
+            string myparams = "-F \"parameters=@" + myparam_file + "\" ";
+            string api = "\"https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classify?api_key=367b29a6797114577d8ac9f8c9335b0ca5a3baa2&version=2016-05-20\" ";
+            string arg = post + images_file + myparams + api;
             Process process = new Process();
             process.StartInfo.FileName = cmd;
             process.StartInfo.Arguments = arg;

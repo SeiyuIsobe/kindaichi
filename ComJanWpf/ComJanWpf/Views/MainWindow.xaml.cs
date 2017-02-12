@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ComJanWpf.Views
 {
@@ -108,7 +109,7 @@ namespace ComJanWpf.Views
                         _picture.Dispatcher.Invoke(() =>
                         {
                             _picture.Source = BitmapToBitmapFrame.Convert(eventArgs.Frame);
-                        });
+                        }, DispatcherPriority.Normal, new System.Threading.CancellationToken());
                     };
 
                     // ピクセル計算用
@@ -205,19 +206,47 @@ namespace ComJanWpf.Views
                 ComJanEngine cje = new ComJanEngine();
                 var list = cje.InputTehai(dest);
 
+                // 200x200
+                list = ChangeSizeTo200x200(list);
+
                 for(int i = 0; i < 14; i++)
                 {
                     _pctPaiList[i].Source = list[i].ToImageSource();
                 }
 
-                //if(false == _loadBitmap_mode)
-                //{
-                //    _mainVM.SavePai(list);
-                //}
-
                 _paiList = list;
             }
             
+        }
+
+        private List<Bitmap> ChangeSizeTo200x200(List<Bitmap> list)
+        {
+            List<Bitmap> newlist = new List<Bitmap>();
+
+            foreach (var bmp in list)
+            {
+                System.Drawing.Point[] src = new System.Drawing.Point[]
+                {
+                    new System.Drawing.Point(0, 0),
+                    new System.Drawing.Point(bmp.Width - 1, 0),
+                    new System.Drawing.Point(bmp.Width - 1, bmp.Height - 1),
+                    new System.Drawing.Point(0, bmp.Height - 1)
+                };
+
+                System.Drawing.Point[] dst = new System.Drawing.Point[]
+                {
+                    new System.Drawing.Point(0, 0),
+                    new System.Drawing.Point(299, 0),
+                    new System.Drawing.Point(299, 299),
+                    new System.Drawing.Point(0, 299)
+                };
+
+                Affine aff = new Affine();
+                var newbmp = aff.Resize(bmp, src, dst);
+                newlist.Add(newbmp);
+            }
+
+            return newlist;
         }
 
         private void GetPerspectiveTransform()

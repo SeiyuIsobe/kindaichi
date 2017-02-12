@@ -126,28 +126,95 @@ namespace ComJanWpf.ViewModels
         {
             string[] kaze = new string[] { "ton", "nan", "sha", "pee" };
             string[] sangen = new string[] { "haku", "hatu", "chun" };
+            string[] manzucomps = new string[]
+            {
+@"C:\Users\seiyu\Documents\ComJanData\MANZU1.zip",
+@"C:\Users\seiyu\Documents\ComJanData\MANZU2.zip",
+@"C:\Users\seiyu\Documents\ComJanData\MANZU3.zip",
+@"C:\Users\seiyu\Documents\ComJanData\MANZU4.zip",
+@"C:\Users\seiyu\Documents\ComJanData\MANZU5.zip",
+@"C:\Users\seiyu\Documents\ComJanData\MANZU6.zip",
+@"C:\Users\seiyu\Documents\ComJanData\MANZU7.zip",
+@"C:\Users\seiyu\Documents\ComJanData\MANZU8.zip",
+@"C:\Users\seiyu\Documents\ComJanData\MANZU9.zip"
+            };
+            string[] pinzucomps = new string[]
+            {
+@"C:\Users\seiyu\Documents\ComJanData\PINZU1.zip",
+@"C:\Users\seiyu\Documents\ComJanData\PINZU2.zip",
+@"C:\Users\seiyu\Documents\ComJanData\PINZU3.zip",
+@"C:\Users\seiyu\Documents\ComJanData\PINZU4.zip",
+@"C:\Users\seiyu\Documents\ComJanData\PINZU5.zip",
+@"C:\Users\seiyu\Documents\ComJanData\PINZU6.zip",
+@"C:\Users\seiyu\Documents\ComJanData\PINZU7.zip",
+@"C:\Users\seiyu\Documents\ComJanData\PINZU8.zip",
+@"C:\Users\seiyu\Documents\ComJanData\PINZU9.zip"
+            };
+            string[] souzucomps = new string[]
+            {
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU1.zip",
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU2.zip",
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU3.zip",
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU4.zip",
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU5.zip",
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU6.zip",
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU7.zip",
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU8.zip",
+@"C:\Users\seiyu\Documents\ComJanData\SOUZU9.zip"
+            };
+            string[] kazecomps = new string[]
+            {
+@"C:\Users\seiyu\Documents\ComJanData\ton.zip",
+@"C:\Users\seiyu\Documents\ComJanData\nan.zip",
+@"C:\Users\seiyu\Documents\ComJanData\sha.zip",
+@"C:\Users\seiyu\Documents\ComJanData\pee.zip"
+            };
+            string[] sangencomps = new string[]
+            {
+@"C:\Users\seiyu\Documents\ComJanData\haku.zip",
+@"C:\Users\seiyu\Documents\ComJanData\hatu.zip",
+@"C:\Users\seiyu\Documents\ComJanData\chun.zip"
+            };
+            int num = 300;
 
             if(string.Empty != _manpinsou)
             {
                 for (int i = 1; i <= 9; i++)
                 {
+                    // 圧縮用
+                    List<string> complist = new List<string>();
+
                     var outdatapath = _outdatapath + "\\" + _manpinsou;
 
                     // 出力先フォルダ（1～9）
                     var bitmappath = GetBitmapPath(outdatapath, i.ToString());
 
                     // 保存
-                    Save(list[i - 1], bitmappath);
+                    var ss = Save(list[i - 1], bitmappath);
+
+                    // 圧縮
+                    complist.Add(ss);
 
                     // 学習データ
                     if (true == _isCreatedStudyData)
                     {
-                        for (int k = 0; k < 100; k++)
+                        for (int k = 0; k < num; k++)
                         {
                             var bmp = CreateStudyData(list[i - 1]);
                             var bmp_path = GetBitmapPath(outdatapath, i.ToString());
-                            Save(bmp, bmp_path);
+                            var s3 = Save(bmp, bmp_path);
+
+                            // 圧縮
+                            complist.Add(s3);
                         }
+
+                        // 圧縮実行
+                        string compspath = string.Empty;
+                        if (true == _isManzu) compspath = manzucomps[i - 1];
+                        if (true == _isPinzu) compspath = pinzucomps[i - 1];
+                        if (true == _isSouzu) compspath = souzucomps[i - 1];
+
+                        ZipHelper.Compress(complist, compspath);
                     }
                 }
 
@@ -164,21 +231,35 @@ namespace ComJanWpf.ViewModels
 
                 for (int i = 1; i <= kaze.Length; i++)
                 {
+                    // 圧縮用
+                    List<string> complist = new List<string>();
+
                     // 出力先フォルダ（ton, nan, sha, pee）
                     var bitmappath = GetBitmapPath(outdatapath, kaze[i - 1]);
 
                     // 保存
-                    Save(list[i + 8], bitmappath);
+                    var ss = Save(list[i + 8], bitmappath);
+
+                    // 圧縮
+                    complist.Add(ss);
 
                     // 学習データ
                     if (true == _isCreatedStudyData)
                     {
-                        for (int k = 0; k < 100; k++)
+                        for (int k = 0; k < num; k++)
                         {
                             var bmp = CreateStudyData(list[i + 8]);
                             var bmp_path = GetBitmapPath(outdatapath, kaze[i - 1]);
-                            Save(bmp, bmp_path);
+                            var s3 = Save(bmp, bmp_path);
+
+                            // 圧縮
+                            complist.Add(s3);
                         }
+
+                        // 圧縮実行
+                        string compspath = string.Empty;
+                        compspath = kazecomps[i - 1];
+                        ZipHelper.Compress(complist, compspath);
                     }
                 }
 
@@ -190,21 +271,35 @@ namespace ComJanWpf.ViewModels
 
                 for (int i = 1; i <= sangen.Length; i++)
                 {
+                    // 圧縮用
+                    List<string> complist = new List<string>();
+
                     // 出力先フォルダ（ton, nan, sha, pee）
                     var bitmappath = GetBitmapPath(outdatapath, sangen[i - 1]);
 
                     // 保存
-                    Save(list[i + 8], bitmappath);
+                    var ss = Save(list[i + 8], bitmappath);
+
+                    // 圧縮
+                    complist.Add(ss);
 
                     // 学習データ
                     if (true == _isCreatedStudyData)
                     {
-                        for (int k = 0; k < 100; k++)
+                        for (int k = 0; k < num; k++)
                         {
                             var bmp = CreateStudyData(list[i + 8]);
                             var bmp_path = GetBitmapPath(outdatapath, sangen[i - 1]);
-                            Save(bmp, bmp_path);
+                            var s3 = Save(bmp, bmp_path);
+
+                            // 圧縮
+                            complist.Add(s3);
                         }
+
+                        // 圧縮実行
+                        string compspath = string.Empty;
+                        compspath = sangencomps[i - 1];
+                        ZipHelper.Compress(complist, compspath);
                     }
                 }
 
@@ -222,12 +317,20 @@ namespace ComJanWpf.ViewModels
             bitmap.Save(outdatapath);
         }
 
-        private static void Save(System.Drawing.Bitmap bitmap, string bitmappath)
+        private static string Save(System.Drawing.Bitmap bitmap_org, string bitmappath)
         {
+            Bitmap bitmap = bitmap_org;
+
+            // 二値化
+            if(true)
+            {
+                bitmap = ComJanEngine.TwoColorscale(bitmap_org, 100);
+            }
 
             if (true == System.IO.File.Exists(bitmappath))
             {
                 // どうするか。。。
+                return null;
             }
             else
             {
@@ -236,6 +339,8 @@ namespace ComJanWpf.ViewModels
                 // jpeg
                 bitmappath = bitmappath.Replace(".bmp", ".jpg");
                 bitmap.Save(bitmappath, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                return bitmappath;
             }
         }
 
