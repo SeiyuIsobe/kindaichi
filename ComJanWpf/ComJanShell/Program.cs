@@ -12,8 +12,13 @@ namespace ComJanShell
     {
         static void Main(string[] args)
         {
-            string hyoka_file = @"C:\Users\seiyu\Documents\ComJanData\Outdata\SANGEN\hatu\m1194131818.jpg";
-            string myparam_file = @"C:\Users\seiyu\Documents\ComJanData\myparams.json";
+            string mydocumentspath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            //string hyoka_file = @"C:\Users\ISeiy\Documents\ComJanData\Outdata\MANZU\3\m-1548352973.jpg";
+            Console.Write(">");
+            string hyoka_file = Console.ReadLine();
+
+            string myparam_file = mydocumentspath +  @"\ComJanData\myparams.json";
 
             string cmd = "curl.exe ";
             string post = "-X POST ";

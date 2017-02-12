@@ -316,7 +316,15 @@ namespace ComJanWpf.Views
 
             _pointer.Source = bmp.ToImageSource();
         }
-        
+
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            string s = await WatsonHelper.CogniteAsync(@"C:\Users\ISeiy\Documents\ComJanData\Outdata\MANZU\4\m-149922835.jpg");
+            //string s = WatsonHelper.Cognite(@"C:\Users\ISeiy\Documents\ComJanData\Outdata\MANZU\4\m-149922835.jpg");
+
+            System.Diagnostics.Debug.WriteLine($"-> {s}");
+            
+        }
     }
 
     

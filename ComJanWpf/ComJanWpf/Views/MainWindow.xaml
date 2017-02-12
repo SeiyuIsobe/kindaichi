@@ -64,6 +64,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>
+                <Button Content="評価実験" Click="Button_Click_2"/>
 
             </StackPanel>
         </Grid>

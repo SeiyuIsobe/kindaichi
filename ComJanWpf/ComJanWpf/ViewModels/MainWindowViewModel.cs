@@ -175,7 +175,7 @@ namespace ComJanWpf.ViewModels
 @"C:\Users\seiyu\Documents\ComJanData\hatu.zip",
 @"C:\Users\seiyu\Documents\ComJanData\chun.zip"
             };
-            int num = 300;
+            int num = 10;
 
             if(string.Empty != _manpinsou)
             {
