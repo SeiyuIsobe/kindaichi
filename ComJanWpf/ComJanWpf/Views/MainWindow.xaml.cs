@@ -1,6 +1,7 @@
 ﻿using AForge.Video.DirectShow;
 using ComJan;
 using ComJanWpf.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+
 
 namespace ComJanWpf.Views
 {
@@ -46,7 +48,7 @@ namespace ComJanWpf.Views
 
             ViewModels.DeviceFilters ds = new ViewModels.DeviceFilters();
             var qs = ds.Get();
-            foreach(var q in qs)
+            foreach (var q in qs)
             {
                 _selectCamera = q as DeviceFilters;
                 break;
@@ -76,7 +78,7 @@ namespace ComJanWpf.Views
             _mainVM = this.DataContext as MainWindowViewModel;
             _mainVM.Messenger.Raised += (ss, ee) =>
             {
-                switch(ee.Message.MessageKey)
+                switch (ee.Message.MessageKey)
                 {
                     case "OpenCommandMessage":
                         _loadfile = _mainVM.OpenFilePath;
@@ -85,7 +87,7 @@ namespace ComJanWpf.Views
                 }
             };
 
-            if(null == _selectCamera)
+            if (null == _selectCamera)
             {
                 LoadBitmapFile(_picture);
             }
@@ -96,7 +98,7 @@ namespace ComJanWpf.Views
                 // 初期値は低解像度をハイビジョン1920x1080に設定する
                 _device.VideoResolution = _device.Search(1920, 1080);
 
-                if(null == _device.VideoResolution)
+                if (null == _device.VideoResolution)
                 {
                     _device.VideoResolution = _device.Search(1280, 960);
                 }
@@ -209,14 +211,14 @@ namespace ComJanWpf.Views
                 // 200x200
                 list = ChangeSizeTo200x200(list);
 
-                for(int i = 0; i < 14; i++)
+                for (int i = 0; i < 14; i++)
                 {
                     _pctPaiList[i].Source = list[i].ToImageSource();
                 }
 
                 _paiList = list;
             }
-            
+
         }
 
         private List<Bitmap> ChangeSizeTo200x200(List<Bitmap> list)
@@ -319,14 +321,13 @@ namespace ComJanWpf.Views
 
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            string s = await WatsonHelper.CogniteAsync(@"C:\Users\ISeiy\Documents\ComJanData\Outdata\MANZU\4\m-149922835.jpg");
+            string mydocumentspath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string s = await WatsonHelper.CogniteAsync(mydocumentspath + @"\ComJanData\Outdata\MANZU\4\m-149922835.jpg");
             //string s = WatsonHelper.Cognite(@"C:\Users\ISeiy\Documents\ComJanData\Outdata\MANZU\4\m-149922835.jpg");
 
             System.Diagnostics.Debug.WriteLine($"-> {s}");
-            
+
+            SirWatson.VisualRecog.Result r = JsonConvert.DeserializeObject<SirWatson.VisualRecog.Result>(s);
         }
     }
-
-    
-    
 }
